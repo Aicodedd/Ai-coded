@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI CODED COMPARISON</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f0f4ff;
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+  color: #fff;
+  text-align: center;
+  padding: 36px 20px 28px;
+  box-shadow: 0 4px 24px rgba(79,70,229,0.3);
+}
+header h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+header p {
+  margin-top: 6px;
+  font-size: 0.88rem;
+  opacity: 0.85;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ── MAIN ── */
+main { max-width: 1320px; margin: 0 auto; padding: 32px 16px 60px; }
+
+/* ── SELECTOR GRID ── */
+.selector-row {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 0;
+  align-items: start;
+  margin-bottom: 28px;
+}
+@media(max-width:700px){
+  .selector-row { grid-template-columns:1fr; gap:16px; }
+  .vs-col { display:none; }
+}
+
+/* ── CARD ── */
+.card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(79,70,229,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  overflow: visible;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #f0f0f8;
+}
+.card-num {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800; font-size: 0.85rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.num1 { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+.num2 { background: linear-gradient(135deg, #ec4899, #ef4444); }
+.card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+.card-body { padding: 18px 20px 20px; }
+
+/* ── LABEL ── */
+.field-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7c7c9a;
+  margin-bottom: 8px;
+  margin-top: 14px;
+}
+.field-label:first-child { margin-top: 0; }
+
+/* ── BRAND SEARCH ── */
+.input-wrap { position: relative; margin-bottom: 10px; }
+.input-icon {
+  position: absolute; left: 11px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px; pointer-events: none;
+  color: #a0a0b8;
+}
+input[type=text] {
+  width: 100%;
+  border: 1.5px solid #e4e4f0;
+  border-radius: 10px;
+  padding: 10px 12px 10px 34px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: #1a1a2e;
+  background: #fafafe;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+input[type=text]:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  background: #fff;
+}
+input[type=text]::placeholder { color: #b0b0cc; }
+input[type=text]:disabled { opacity: 0.5; cursor: not-allowed; background:#f5f5fc; }
+
+/* ── BRAND LIST (always visible, scrollable) ── */
+.brand-list {
+  border: 1.5px solid #e4e4f0;
+  border-radius: 12px;
+  max-height: 180px;
+  overflow-y: auto;
+  background: #fafafe;
+  margin-bottom: 0;
+}
+.brand-list::-webkit-scrollbar { width: 5px; }
+.brand-list::-webkit-scrollbar-thumb { background: #d0d0e8; border-radius: 3px; }
+
+.brand-item {
+  display: flex; align-items: center;
+  padding: 9px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #3a3a5c;
+  cursor: pointer;
+  border-bottom: 1px solid #f2f2fa;
+  transition: background .12s;
+  gap: 8px;
+}
+.brand-item:last-child { border-bottom: none; }
+.brand-item:hover { background: #f0f0ff; color: #4f46e5; }
+.brand-item.active {
+  background: linear-gradient(90deg, #eef0ff, #f5f0ff);
+  color: #4f46e5;
+  font-weight: 600;
+  border-left: 3px solid #4f46e5;
+}
+.brand-item .brand-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #d0d0e8;
+  flex-shrink: 0;
+}
+.brand-item.active .brand-dot { background: #4f46e5; }
+.brand-no-result {
+  padding: 20px;
+  text-align: center;
+  color: #a0a0b8;
+  font-size: 0.82rem;
+}
+
+/* ── MODEL LIST (always visible) ── */
+.model-list {
+  border: 1.5px solid #e4e4f0;
+  border-radius: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #fafafe;
+}
+.model-list::-webkit-scrollbar { width: 5px; }
+.model-list::-webkit-scrollbar-thumb { background: #d0d0e8; border-radius: 3px; }
+
+.model-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 14px;
+  font-size: 0.85rem;
+  color: #3a3a5c;
+  cursor: pointer;
+  border-bottom: 1px solid #f2f2fa;
+  transition: background .12s;
+}
+.model-item:last-child { border-bottom: none; }
+.model-item:hover { background: #f0f0ff; color: #4f46e5; }
+.model-item.active {
+  background: linear-gradient(90deg, #eef0ff, #fff0f8);
+  color: #4f46e5;
+  font-weight: 600;
+}
+.model-placeholder {
+  padding: 28px 20px;
+  text-align: center;
+  color: #b0b0cc;
+  font-size: 0.82rem;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.model-placeholder span { font-size: 1.8rem; }
+
+/* Loading spinner inside list */
+.list-loading {
+  padding: 24px;
+  text-align: center;
+  color: #7c7c9a;
+  font-size: 0.82rem;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.spin {
+  width: 16px; height: 16px;
+  border: 2px solid #e4e4f0;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SELECTED BADGE ── */
+.selected-badge {
+  margin-top: 14px;
+  display: none;
+  background: linear-gradient(135deg, #eef0ff, #f8f0ff);
+  border: 1.5px solid #c7c4f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  align-items: center;
+  gap: 10px;
+}
+.selected-badge.show { display: flex; }
+.badge-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.b1 { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+.b2 { background: linear-gradient(135deg, #ec4899, #ef4444); }
+.badge-info { flex: 1; min-width: 0; }
+.badge-brand {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7c7c9a;
+}
+.badge-model {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.badge-clear {
+  background: none; border: none;
+  color: #b0b0cc; cursor: pointer;
+  font-size: 18px; line-height: 1;
+  padding: 2px;
+  transition: color .15s;
+}
+.badge-clear:hover { color: #ef4444; }
+
+/* ── VS COLUMN ── */
+.vs-col {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding-top: 100px; gap: 10px;
+}
+.vs-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.vs-line { width: 2px; height: 30px; background: #e4e4f0; border-radius: 1px; }
+
+/* ── COMPARE BUTTON ── */
+.btn-row { text-align: center; margin-bottom: 36px; }
+.compare-btn {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed, #ec4899);
+  background-size: 200% 200%;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 16px 52px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, opacity .2s;
+  box-shadow: 0 6px 24px rgba(79,70,229,0.35);
+}
+.compare-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(79,70,229,0.45);
+}
+.compare-btn:active:not(:disabled) { transform: translateY(0); }
+.compare-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── AI LOADING ── */
+.ai-loading {
+  display: none;
+  text-align: center;
+  padding: 48px 20px;
+}
+.ai-loading.show { display: block; }
+.big-spin {
+  width: 52px; height: 52px;
+  border: 3px solid #e4e4f0;
+  border-top-color: #4f46e5;
+  border-right-color: #7c3aed;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 16px;
+}
+.ai-loading-text {
+  font-size: 0.88rem;
+  color: #7c7c9a;
+  font-weight: 500;
+}
+
+/* ── RESULTS ── */
+#results { display: none; }
+#results.show { display: block; }
+
+.results-title-wrap {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.results-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  font-weight: 900;
+  color: #1a1a2e;
+}
+.results-date {
+  font-size: 0.78rem;
+  color: #a0a0b8;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* ── COMPARISON TABLE ── */
+.cmp-table {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 20px rgba(79,70,229,0.07);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.cmp-head {
+  display: grid;
+  grid-template-columns: 180px 1fr 1fr;
+  background: linear-gradient(135deg, #f5f5ff, #fdf5ff);
+  border-bottom: 2px solid #e8e8f8;
+}
+@media(max-width:560px){
+  .cmp-head, .cmp-row { grid-template-columns: 110px 1fr 1fr; }
+}
+.th {
+  padding: 16px 16px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7c7c9a;
+  font-family: 'Outfit', sans-serif;
+}
+.th.p1 {
+  border-left: 1px solid #e8e8f8;
+  color: #4f46e5;
+  font-size: 0.85rem;
+  text-transform: none;
+  font-weight: 700;
+}
+.th.p2 {
+  border-left: 1px solid #e8e8f8;
+  color: #ec4899;
+  font-size: 0.85rem;
+  text-transform: none;
+  font-weight: 700;
+}
+
+/* Section row */
+.cmp-section {
+  background: linear-gradient(90deg, #f0f0ff, #fdf5ff);
+  border-top: 1px solid #e8e8f8;
+  border-bottom: 1px solid #e8e8f8;
+  padding: 10px 16px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #7c3aed;
+  text-transform: uppercase;
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 8px;
+}
+.sec-line { flex:1; height:1px; background: rgba(124,58,237,0.15); }
+
+/* Data row */
+.cmp-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 1fr;
+  border-bottom: 1px solid #f5f5fc;
+  transition: background .12s;
+}
+@media(max-width:560px){ .cmp-row { grid-template-columns: 110px 1fr 1fr; } }
+.cmp-row:last-child { border-bottom: none; }
+.cmp-row:hover { background: #fafafe; }
+.cmp-row.section-row { display: block; }
+
+.td-label {
+  padding: 12px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #9090a8;
+  display: flex; align-items: flex-start; gap: 6px;
+  line-height: 1.4;
+}
+.td-val {
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  color: #2a2a4a;
+  font-weight: 500;
+  border-left: 1px solid #f0f0f8;
+  line-height: 1.5;
+}
+.td-val.v1 { border-left: 2px solid rgba(79,70,229,0.12); }
+.td-val.v2 { border-left: 2px solid rgba(236,72,153,0.12); }
+
+.better-tag {
+  display: inline-block;
+  background: #eefbf3;
+  border: 1px solid #b6e8c8;
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #16a34a;
+  margin-left: 5px;
+  vertical-align: middle;
+  letter-spacing: 0.05em;
+}
+
+/* Score bars */
+.score-wrap { display: flex; align-items: center; gap: 8px; }
+.score-track {
+  flex: 1; height: 7px;
+  background: #f0f0f8;
+  border-radius: 4px; overflow: hidden;
+}
+.score-fill1 {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5, #7c3aed);
+  border-radius: 4px;
+  transition: width 1.2s cubic-bezier(.34,1.56,.64,1);
+}
+.score-fill2 {
+  height: 100%;
+  background: linear-gradient(90deg, #ec4899, #ef4444);
+  border-radius: 4px;
+  transition: width 1.2s cubic-bezier(.34,1.56,.64,1);
+}
+.score-num {
+  font-size: 0.8rem;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: right;
+}
+.sn1 { color: #4f46e5; }
+.sn2 { color: #ec4899; }
+
+/* ── VERDICT ── */
+.verdict-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 20px rgba(79,70,229,0.07);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.verdict-head {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed, #ec4899);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 10px;
+  color: #fff;
+}
+.verdict-head span {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.verdict-body {
+  padding: 20px 24px;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: #2a2a4a;
+}
+.verdict-body .hl1 { color: #4f46e5; font-weight: 700; }
+.verdict-body .hl2 { color: #ec4899; font-weight: 700; }
+.verdict-body .hl-win { color: #16a34a; font-weight: 700; }
+
+/* ── WINNER BANNER ── */
+.winner-banner {
+  border-radius: 14px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+}
+.winner-banner.w1 {
+  background: linear-gradient(135deg, #eef0ff, #f5efff);
+  border: 2px solid #c7c4f0;
+  color: #4f46e5;
+}
+.winner-banner.w2 {
+  background: linear-gradient(135deg, #fff0f8, #fff0f0);
+  border: 2px solid #f0c4d8;
+  color: #ec4899;
+}
+.winner-banner.wtie {
+  background: linear-gradient(135deg, #f0fdf4, #f0f9ff);
+  border: 2px solid #b6e8c8;
+  color: #16a34a;
+}
+.winner-trophy { font-size: 1.5rem; }
+
+/* ── ERROR ── */
+.err-box {
+  background: #fff5f5;
+  border: 1.5px solid #fecaca;
+  border-radius: 12px;
+  padding: 20px;
+  color: #dc2626;
+  font-size: 0.88rem;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ AI CODED COMPARISON</h1>
+  <p>Every Brand · Every Model · AI-Powered Analysis</p>
+</header>
+
+<main>
+
+  <!-- ── SELECTOR ROW ── -->
+  <div class="selector-row">
+
+    <!-- Phone 1 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num num1">01</div>
+        <span class="card-title">First Phone</span>
+      </div>
+      <div class="card-body">
+        <div class="field-label">Select Brand</div>
+        <div class="input-wrap">
+          <span class="input-icon">🔍</span>
+          <input type="text" id="bs1" placeholder="Search brand..." oninput="filterBrands(1)">
+        </div>
+        <div class="brand-list" id="bl1"></div>
+
+        <div class="field-label" style="margin-top:16px">Select Model</div>
+        <div class="input-wrap">
+          <span class="input-icon">🔍</span>
+          <input type="text" id="ms1" placeholder="Search model..." oninput="filterModels(1)" disabled>
+        </div>
+        <div class="model-list" id="ml1">
+          <div class="model-placeholder"><span>📱</span>Select a brand first</div>
+        </div>
+
+        <div class="selected-badge" id="sb1">
+          <div class="badge-icon b1">📱</div>
+          <div class="badge-info">
+            <div class="badge-brand" id="sb1-brand"></div>
+            <div class="badge-model" id="sb1-model"></div>
+          </div>
+          <button class="badge-clear" onclick="clearSel(1)" title="Clear">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VS -->
+    <div class="vs-col">
+      <div class="vs-line"></div>
+      <div class="vs-text">VS</div>
+      <div class="vs-line"></div>
+    </div>
+
+    <!-- Phone 2 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-num num2">02</div>
+        <span class="card-title">Second Phone</span>
+      </div>
+      <div class="card-body">
+        <div class="field-label">Select Brand</div>
+        <div class="input-wrap">
+          <span class="input-icon">🔍</span>
+          <input type="text" id="bs2" placeholder="Search brand..." oninput="filterBrands(2)">
+        </div>
+        <div class="brand-list" id="bl2"></div>
+
+        <div class="field-label" style="margin-top:16px">Select Model</div>
+        <div class="input-wrap">
+          <span class="input-icon">🔍</span>
+          <input type="text" id="ms2" placeholder="Search model..." oninput="filterModels(2)" disabled>
+        </div>
+        <div class="model-list" id="ml2">
+          <div class="model-placeholder"><span>📱</span>Select a brand first</div>
+        </div>
+
+        <div class="selected-badge" id="sb2">
+          <div class="badge-icon b2">📱</div>
+          <div class="badge-info">
+            <div class="badge-brand" id="sb2-brand"></div>
+            <div class="badge-model" id="sb2-model"></div>
+          </div>
+          <button class="badge-clear" onclick="clearSel(2)" title="Clear">✕</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /selector-row -->
+
+  <!-- ── COMPARE BUTTON ── -->
+  <div class="btn-row">
+    <button class="compare-btn" id="compareBtn" onclick="runCompare()" disabled>
+      ⚡ COMPARE NOW
+    </button>
+  </div>
+
+  <!-- ── AI LOADING ── -->
+  <div class="ai-loading" id="aiLoading">
+    <div class="big-spin"></div>
+    <div class="ai-loading-text" id="loadTxt">Analyzing phones with AI...</div>
+  </div>
+
+  <!-- ── RESULTS ── -->
+  <div id="results">
+    <div class="results-title-wrap">
+      <div class="results-title" id="rTitle"></div>
+      <div class="results-date" id="rDate"></div>
+    </div>
+    <div id="winnerBannerWrap"></div>
+    <div class="cmp-table" id="cmpTable"></div>
+    <div class="verdict-card" id="verdictCard" style="display:none">
+      <div class="verdict-head">🤖 <span>AI VERDICT</span></div>
+      <div class="verdict-body" id="verdictBody"></div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ════════════════════════════════════════
+//  BRAND DATABASE
+// ════════════════════════════════════════
+const BRANDS = [
+  "Apple","Samsung","Google","OnePlus","Xiaomi","OPPO","Vivo","Realme","Huawei",
+  "Sony","Motorola","Nokia","Asus","Lenovo","ZTE","TCL","Alcatel","Honor","Meizu",
+  "Nothing","Infinix","Tecno","itel","Gionee","Micromax","Lava","Panasonic","Sharp",
+  "Fujitsu","Kyocera","NEC","Coolpad","Nubia","Black Shark","POCO","Redmi","iQOO",
+  "Wiko","BLU","Doogee","Ulefone","OUKITEL","Cubot","Umidigi","Blackview","Fairphone",
+  "Gigaset","Hisense","Haier","BQ","Energizer","CAT","Sonim","Crosscall","AGM",
+  "Razer","HTC","BlackBerry","Palm","Shift","Punkt","LG","Vertu","Leagoo","Vernee",
+  "Elephone","UMIDIGI","Cubot","myPhone","Yota","Obi","Plum","Blu","Maxwest",
+  "Celkon","Xolo","Karbonn","Spice","Videocon","Samsung (Dual)","ZTE Nubia",
+  "Vivo X","OPPO Find","OnePlus Nord","Realme GT","Xiaomi Mi","Redmi Note",
+  "Huawei P","Huawei Mate","Honor Magic","Samsung Galaxy","iPhone","Pixel"
+].filter((v,i,a)=>a.indexOf(v)===i).sort();
+
+// Pre-loaded models for top brands
+const LOCAL_MODELS = {
+  "Apple":[
+    "iPhone 16 Pro Max","iPhone 16 Pro","iPhone 16 Plus","iPhone 16",
+    "iPhone 15 Pro Max","iPhone 15 Pro","iPhone 15 Plus","iPhone 15",
+    "iPhone 14 Pro Max","iPhone 14 Pro","iPhone 14 Plus","iPhone 14",
+    "iPhone 13 Pro Max","iPhone 13 Pro","iPhone 13 mini","iPhone 13",
+    "iPhone 12 Pro Max","iPhone 12 Pro","iPhone 12 mini","iPhone 12",
+    "iPhone 11 Pro Max","iPhone 11 Pro","iPhone 11",
+    "iPhone XS Max","iPhone XS","iPhone XR","iPhone X",
+    "iPhone SE (3rd Gen)","iPhone SE (2nd Gen)","iPhone SE (1st Gen)",
+    "iPhone 8 Plus","iPhone 8","iPhone 7 Plus","iPhone 7",
+    "iPhone 6s Plus","iPhone 6s","iPhone 6 Plus","iPhone 6",
+    "iPhone 5s","iPhone 5c","iPhone 5","iPhone 4S","iPhone 4"
+  ],
+  "Samsung":[
+    "Galaxy S25 Ultra","Galaxy S25+","Galaxy S25",
+    "Galaxy S24 Ultra","Galaxy S24+","Galaxy S24 FE","Galaxy S24",
+    "Galaxy S23 Ultra","Galaxy S23+","Galaxy S23 FE","Galaxy S23",
+    "Galaxy S22 Ultra","Galaxy S22+","Galaxy S22",
+    "Galaxy S21 Ultra","Galaxy S21+","Galaxy S21 FE","Galaxy S21",
+    "Galaxy Z Fold 6","Galaxy Z Fold 5","Galaxy Z Fold 4","Galaxy Z Fold 3",
+    "Galaxy Z Flip 6","Galaxy Z Flip 5","Galaxy Z Flip 4","Galaxy Z Flip 3",
+    "Galaxy A55 5G","Galaxy A54","Galaxy A53 5G","Galaxy A52s","Galaxy A52",
+    "Galaxy A35 5G","Galaxy A34","Galaxy A33","Galaxy A32",
+    "Galaxy A25","Galaxy A24","Galaxy A23","Galaxy A22",
+    "Galaxy A16","Galaxy A15","Galaxy A14","Galaxy A13",
+    "Galaxy M55","Galaxy M54","Galaxy M53 5G","Galaxy M52",
+    "Galaxy Note 20 Ultra","Galaxy Note 20","Galaxy Note 10+","Galaxy Note 10",
+    "Galaxy Note 9","Galaxy Note 8"
+  ],
+  "Google":[
+    "Pixel 9 Pro XL","Pixel 9 Pro Fold","Pixel 9 Pro","Pixel 9",
+    "Pixel 8 Pro","Pixel 8a","Pixel 8",
+    "Pixel 7 Pro","Pixel 7a","Pixel 7",
+    "Pixel 6 Pro","Pixel 6a","Pixel 6",
+    "Pixel 5a 5G","Pixel 5","Pixel 4a 5G","Pixel 4a","Pixel 4 XL","Pixel 4",
+    "Pixel 3a XL","Pixel 3a","Pixel 3 XL","Pixel 3",
+    "Pixel 2 XL","Pixel 2","Pixel XL","Pixel"
+  ],
+  "OnePlus":[
+    "OnePlus 13","OnePlus 12R","OnePlus 12",
+    "OnePlus 11R","OnePlus 11","OnePlus 10 Pro","OnePlus 10T","OnePlus 10R",
+    "OnePlus 9 Pro","OnePlus 9R","OnePlus 9RT","OnePlus 9",
+    "OnePlus 8 Pro","OnePlus 8T","OnePlus 8",
+    "OnePlus 7T Pro","OnePlus 7T","OnePlus 7 Pro","OnePlus 7",
+    "OnePlus Nord 4","OnePlus Nord CE4 Lite","OnePlus Nord CE4","OnePlus Nord 3",
+    "OnePlus Nord CE3 Lite","OnePlus Nord CE3","OnePlus Nord 2T","OnePlus Nord 2",
+    "OnePlus Nord CE 2","OnePlus Nord CE","OnePlus Nord",
+    "OnePlus Open","OnePlus 6T","OnePlus 6","OnePlus 5T","OnePlus 5","OnePlus 3T","OnePlus 3"
+  ],
+  "Xiaomi":[
+    "Xiaomi 14 Ultra","Xiaomi 14 Pro","Xiaomi 14","Xiaomi 14T Pro","Xiaomi 14T",
+    "Xiaomi 13 Ultra","Xiaomi 13 Pro","Xiaomi 13","Xiaomi 13T Pro","Xiaomi 13T",
+    "Xiaomi 12 Ultra","Xiaomi 12 Pro","Xiaomi 12","Xiaomi 12T Pro","Xiaomi 12T",
+    "Xiaomi 11 Ultra","Xiaomi 11 Pro","Xiaomi 11","Xiaomi 11T Pro","Xiaomi 11T",
+    "Xiaomi Mix Fold 4","Xiaomi Mix Fold 3","Xiaomi Mix Flip",
+    "Redmi Note 13 Pro+","Redmi Note 13 Pro","Redmi Note 13 5G","Redmi Note 13",
+    "Redmi Note 12 Pro+","Redmi Note 12 Pro","Redmi Note 12","Redmi Note 11 Pro",
+    "Redmi 13C","Redmi 12C","Redmi 12","Redmi A3","Redmi A2+","Redmi A2",
+    "POCO X6 Pro","POCO X6","POCO X5 Pro","POCO X5",
+    "POCO F6 Pro","POCO F6","POCO F5 Pro","POCO F5",
+    "POCO M6 Pro","POCO M6","POCO M5s","POCO M5",
+    "POCO C65","POCO C55","POCO C40"
+  ],
+  "OPPO":[
+    "OPPO Find X8 Ultra","OPPO Find X8 Pro","OPPO Find X8",
+    "OPPO Find X7 Ultra","OPPO Find X7 Pro","OPPO Find X7",
+    "OPPO Find X6 Ultra","OPPO Find X6 Pro","OPPO Find X6",
+    "OPPO Find N3 Flip","OPPO Find N3","OPPO Find N2 Flip","OPPO Find N2",
+    "OPPO Reno 12 Pro","OPPO Reno 12","OPPO Reno 11 Pro","OPPO Reno 11",
+    "OPPO Reno 10 Pro+","OPPO Reno 10 Pro","OPPO Reno 10",
+    "OPPO Reno 8 Pro","OPPO Reno 8","OPPO Reno 7 Pro","OPPO Reno 7",
+    "OPPO A3 Pro","OPPO A3","OPPO A2 Pro","OPPO A79","OPPO A78","OPPO A77",
+    "OPPO K12x","OPPO K12","OPPO K11x","OPPO K11"
+  ],
+  "Vivo":[
+    "Vivo X200 Ultra","Vivo X200 Pro","Vivo X200",
+    "Vivo X100 Ultra","Vivo X100 Pro","Vivo X100",
+    "Vivo X90 Pro+","Vivo X90 Pro","Vivo X90",
+    "Vivo X80 Pro","Vivo X80","Vivo X70 Pro+","Vivo X70 Pro","Vivo X70",
+    "Vivo V30 Pro","Vivo V30","Vivo V29 Pro","Vivo V29","Vivo V27 Pro","Vivo V27",
+    "Vivo Y200 Pro","Vivo Y200","Vivo Y100 5G","Vivo Y78","Vivo Y56","Vivo Y36",
+    "iQOO 13","iQOO 12","iQOO 11S","iQOO 11",
+    "iQOO Neo 9 Pro","iQOO Neo 9","iQOO Neo 8 Pro","iQOO Neo 8",
+    "iQOO Z9 Turbo","iQOO Z9x","iQOO Z9","iQOO Z8","iQOO Z7 Pro"
+  ],
+  "Sony":[
+    "Xperia 1 VI","Xperia 5 VI","Xperia 10 VI",
+    "Xperia 1 V","Xperia 5 V","Xperia 10 V","Xperia Ace V",
+    "Xperia 1 IV","Xperia 5 IV","Xperia 10 IV","Xperia Ace III","Xperia Pro-I",
+    "Xperia 1 III","Xperia 5 III","Xperia 10 III Lite","Xperia 10 III",
+    "Xperia 1 II","Xperia 5 II","Xperia 10 II","Xperia Pro",
+    "Xperia L4","Xperia 8 Lite","Xperia 8","Xperia 5"
+  ],
+  "Motorola":[
+    "Motorola Edge 50 Ultra","Motorola Edge 50 Pro","Motorola Edge 50 Fusion","Motorola Edge 50 Neo",
+    "Motorola Edge 40 Ultra","Motorola Edge 40 Pro","Motorola Edge 40 Neo","Motorola Edge 40",
+    "Motorola Edge 30 Ultra","Motorola Edge 30 Fusion","Motorola Edge 30 Pro","Motorola Edge 30 Neo","Motorola Edge 30",
+    "Moto G85","Moto G84","Moto G54","Moto G53","Moto G52","Moto G32","Moto G22","Moto G13",
+    "Motorola Razr 50 Ultra","Motorola Razr 50","Motorola Razr 40 Ultra","Motorola Razr 40",
+    "Moto E40","Moto E30","Moto E20","Moto E13"
+  ],
+  "Nokia":[
+    "Nokia XR21","Nokia X30 5G","Nokia X20","Nokia X10",
+    "Nokia G42 5G","Nokia G22","Nokia G21","Nokia G20","Nokia G11","Nokia G10",
+    "Nokia C32","Nokia C22","Nokia C21 Plus","Nokia C21","Nokia C12","Nokia C11",
+    "Nokia 8.3 5G","Nokia 7.3","Nokia 6.3","Nokia 5.4","Nokia 5.3",
+    "Nokia 3.4","Nokia 2.4","Nokia 1.4",
+    "Nokia 150 (2023)","Nokia 105 (2023)","Nokia 3310 (2017)"
+  ],
+  "Huawei":[
+    "Huawei Pura 70 Ultra","Huawei Pura 70 Pro+","Huawei Pura 70 Pro","Huawei Pura 70",
+    "Huawei Mate 60 Pro+","Huawei Mate 60 Pro","Huawei Mate 60 RS","Huawei Mate 60",
+    "Huawei Mate 50 Pro","Huawei Mate 50 RS","Huawei Mate 50",
+    "Huawei P60 Pro","Huawei P60 Art","Huawei P60",
+    "Huawei Nova 12 Ultra","Huawei Nova 12 Pro","Huawei Nova 12",
+    "Huawei Nova 11 Pro","Huawei Nova 11","Huawei Nova 10 Pro","Huawei Nova 10",
+    "Huawei Mate X5","Huawei Mate X3","Huawei Pocket 2"
+  ],
+  "Honor":[
+    "Honor Magic 7 Pro","Honor Magic 7","Honor Magic 6 Pro","Honor Magic 6 RSR","Honor Magic 6",
+    "Honor Magic 5 Pro","Honor Magic 5 RSR","Honor Magic 5",
+    "Honor Magic V3","Honor Magic V2 RSR","Honor Magic V2",
+    "Honor 200 Pro","Honor 200","Honor 90 Pro","Honor 90","Honor 80 Pro","Honor 80",
+    "Honor X9b","Honor X8b","Honor X7b","Honor X6b","Honor X5b"
+  ],
+  "Nothing":[
+    "Nothing Phone (3)","Nothing Phone (2a) Plus","Nothing Phone (2a)",
+    "Nothing Phone (2)","Nothing Phone (1)","Nothing CMF Phone 1"
+  ],
+  "Realme":[
+    "Realme GT 7 Pro","Realme GT 6T","Realme GT 6","Realme GT 5 Pro","Realme GT 5",
+    "Realme 13 Pro+","Realme 13 Pro","Realme 13",
+    "Realme 12 Pro+","Realme 12 Pro","Realme 12x","Realme 12+","Realme 12",
+    "Realme 11 Pro+","Realme 11 Pro","Realme 11","Realme 11x",
+    "Realme Narzo 70 Pro","Realme Narzo 70","Realme Narzo 60 Pro","Realme Narzo 60",
+    "Realme C67","Realme C65","Realme C55","Realme C53","Realme C51"
+  ],
+  "Asus":[
+    "ROG Phone 8 Pro Edition","ROG Phone 8 Pro","ROG Phone 8",
+    "ROG Phone 7 Ultimate","ROG Phone 7 Pro","ROG Phone 7",
+    "ROG Phone 6D Ultimate","ROG Phone 6D","ROG Phone 6 Pro","ROG Phone 6",
+    "Zenfone 11 Ultra","Zenfone 10","Zenfone 9","Zenfone 8 Flip","Zenfone 8"
+  ],
+  "Fairphone":["Fairphone 5","Fairphone 4","Fairphone 3+","Fairphone 3","Fairphone 2"],
+  "Razer":["Razer Phone 3","Razer Phone 2","Razer Phone"],
+  "LG":["LG Wing","LG Velvet","LG V60 ThinQ","LG V50 ThinQ","LG V50S ThinQ",
+        "LG G8X ThinQ","LG G8 ThinQ","LG G7 ThinQ","LG G6",
+        "LG K92 5G","LG K72","LG K62","LG K52","LG K42",
+        "LG Stylo 7","LG Stylo 6","LG Q92 5G"],
+  "Infinix":["Infinix Zero 40 5G","Infinix Zero 30 5G","Infinix Zero 20","Infinix Zero Ultra",
+             "Infinix Note 40 Pro","Infinix Note 40","Infinix Note 30 Pro","Infinix Note 30",
+             "Infinix Hot 40 Pro","Infinix Hot 40","Infinix Hot 30","Infinix Hot 20",
+             "Infinix Smart 8 Pro","Infinix Smart 8","Infinix Smart 7"],
+  "Tecno":["Tecno Camon 30 Pro","Tecno Camon 30","Tecno Camon 20 Pro","Tecno Camon 20",
+           "Tecno Spark 20 Pro+","Tecno Spark 20 Pro","Tecno Spark 20","Tecno Spark 10",
+           "Tecno Phantom X2 Pro","Tecno Phantom X2","Tecno Pova 6 Pro","Tecno Pova 6",
+           "Tecno Pop 8","Tecno Pop 7 Pro"],
+  "Meizu":["Meizu 21 Pro","Meizu 21 Note","Meizu 21","Meizu 20 Pro","Meizu 20",
+           "Meizu 20 Infinity","Meizu Note 21","Meizu Note 20","Meizu 18 Pro","Meizu 18"]
+};
+
+// ════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════
+const S = {
+  1:{ brand:null, model:null, models:[] },
+  2:{ brand:null, model:null, models:[] }
+};
+
+// ════════════════════════════════════════
+//  INIT — render brand lists
+// ════════════════════════════════════════
+function init(){
+  renderBrandList(1, BRANDS);
+  renderBrandList(2, BRANDS);
+}
+
+function renderBrandList(n, list){
+  const el = document.getElementById('bl'+n);
+  if(!list.length){
+    el.innerHTML='<div class="brand-no-result">No brand found</div>';
+    return;
+  }
+  el.innerHTML = list.map(b=>`
+    <div class="brand-item ${S[n].brand===b?'active':''}"
+      onclick="selectBrand(${n},'${b.replace(/'/g,"\\'")}')">
+      <span class="brand-dot"></span>${b}
+    </div>`).join('');
+}
+
+function filterBrands(n){
+  const q = document.getElementById('bs'+n).value.toLowerCase().trim();
+  renderBrandList(n, q ? BRANDS.filter(b=>b.toLowerCase().includes(q)) : BRANDS);
+}
+
+// ════════════════════════════════════════
+//  SELECT BRAND → load models
+// ════════════════════════════════════════
+async function selectBrand(n, brand){
+  S[n].brand = brand;
+  S[n].model = null;
+  S[n].models = [];
+
+  // re-render brand list to show active
+  filterBrands(n);
+
+  // reset model search
+  const ms = document.getElementById('ms'+n);
+  ms.value = '';
+  ms.disabled = true;
+  ms.placeholder = 'Loading models...';
+
+  // hide badge
+  document.getElementById('sb'+n).classList.remove('show');
+  updateBtn();
+
+  // show loading in model list
+  document.getElementById('ml'+n).innerHTML =
+    `<div class="list-loading"><div class="spin"></div>Fetching ${brand} models...</div>`;
+
+  const models = await getModels(brand);
+  S[n].models = models;
+
+  ms.disabled = false;
+  ms.placeholder = `Search ${brand} models...`;
+
+  renderModelList(n, models);
+}
+
+async function getModels(brand){
+  // Use local database if available
+  if(LOCAL_MODELS[brand]) return LOCAL_MODELS[brand];
+
+  // Ask Claude AI
+  try{
+    const r = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:1000,
+        messages:[{
+          role:"user",
+          content:`List every smartphone model ever released by ${brand}. Return ONLY a valid JSON array of model name strings, newest first. No markdown, no explanation, only the JSON array. Example: ["Model A Pro","Model A","Model B"]`
+        }]
+      })
+    });
+    const d = await r.json();
+    const txt = (d.content||[]).map(c=>c.text||'').join('');
+    const clean = txt.replace(/```json|```/g,'').trim();
+    const arr = JSON.parse(clean);
+    return Array.isArray(arr) && arr.length ? arr :
+      [`${brand} Pro Max`,`${brand} Pro`,`${brand} Ultra`,`${brand} Plus`,`${brand}`,`${brand} Lite`,`${brand} Mini`];
+  }catch(e){
+    return [`${brand} Pro Max`,`${brand} Pro`,`${brand} Ultra`,`${brand} Plus`,`${brand}`,`${brand} Lite`,`${brand} Mini`];
+  }
+}
+
+// ════════════════════════════════════════
+//  MODEL LIST
+// ════════════════════════════════════════
+function renderModelList(n, list){
+  const el = document.getElementById('ml'+n);
+  if(!list.length){
+    el.innerHTML='<div class="brand-no-result">No models found</div>';
+    return;
+  }
+  el.innerHTML = list.map(m=>`
+    <div class="model-item ${S[n].model===m?'active':''}"
+      onclick="selectModel(${n},'${m.replace(/'/g,"\\'")}')">
+      <span>${m}</span>
+      ${S[n].model===m?'<span style="color:#4f46e5;font-size:1rem">✓</span>':''}
+    </div>`).join('');
+}
+
+function filterModels(n){
+  const q = document.getElementById('ms'+n).value.toLowerCase().trim();
+  const list = q ? S[n].models.filter(m=>m.toLowerCase().includes(q)) : S[n].models;
+  renderModelList(n, list);
+}
+
+function selectModel(n, model){
+  S[n].model = model;
+
+  // Show badge
+  document.getElementById('sb'+n+'-brand').textContent = S[n].brand;
+  document.getElementById('sb'+n+'-model').textContent = model;
+  document.getElementById('sb'+n).classList.add('show');
+
+  // Update model list highlight
+  renderModelList(n, S[n].models);
+
+  updateBtn();
+}
+
+function clearSel(n){
+  S[n].model = null;
+  document.getElementById('sb'+n).classList.remove('show');
+  document.getElementById('ms'+n).value='';
+  renderModelList(n, S[n].models);
+  updateBtn();
+}
+
+function updateBtn(){
+  document.getElementById('compareBtn').disabled = !(S[1].model && S[2].model);
+}
+
+// ════════════════════════════════════════
+//  RUN COMPARISON
+// ════════════════════════════════════════
+async function runCompare(){
+  const p1 = `${S[1].brand} ${S[1].model}`;
+  const p2 = `${S[2].brand} ${S[2].model}`;
+
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('aiLoading').classList.add('show');
+
+  const msgs = [
+    `Analyzing ${p1}...`,
+    `Analyzing ${p2}...`,
+    'Comparing specs...','Generating verdict...','Almost done...'
+  ];
+  let mi=0;
+  const lt = document.getElementById('loadTxt');
+  const iv = setInterval(()=>{ lt.textContent = msgs[mi++%msgs.length]; }, 1200);
+
+  try{
+    const prompt = `Compare these two smartphones in detail.
+Phone 1: ${p1}
+Phone 2: ${p2}
+
+Return ONLY valid JSON (absolutely no markdown, no backticks, no explanation). Use this exact structure:
+{
+  "phone1":{
+    "fullName":"full marketing name",
+    "display":"screen size, panel type, resolution, refresh rate",
+    "processor":"chipset full name",
+    "ram":"RAM variants",
+    "storage":"storage variants",
+    "mainCamera":"main camera specs",
+    "frontCamera":"selfie camera specs",
+    "battery":"capacity mAh and fast charging watts",
+    "os":"OS and version",
+    "connectivity":"5G/4G/WiFi/Bluetooth",
+    "nfc":"Yes or No",
+    "weight":"weight in grams",
+    "dimensions":"dimensions mm",
+    "waterResist":"IP rating or None",
+    "price":"approx USD price at launch",
+    "scoreDisplay":75,
+    "scorePerformance":80,
+    "scoreCamera":78,
+    "scoreBattery":72,
+    "scoreValue":70
+  },
+  "phone2":{
+    "fullName":"full marketing name",
+    "display":"screen size, panel type, resolution, refresh rate",
+    "processor":"chipset full name",
+    "ram":"RAM variants",
+    "storage":"storage variants",
+    "mainCamera":"main camera specs",
+    "frontCamera":"selfie camera specs",
+    "battery":"capacity mAh and fast charging watts",
+    "os":"OS and version",
+    "connectivity":"5G/4G/WiFi/Bluetooth",
+    "nfc":"Yes or No",
+    "weight":"weight in grams",
+    "dimensions":"dimensions mm",
+    "waterResist":"IP rating or None",
+    "price":"approx USD price at launch",
+    "scoreDisplay":75,
+    "scorePerformance":80,
+    "scoreCamera":78,
+    "scoreBattery":72,
+    "scoreValue":70
+  },
+  "verdict":"3-4 sentences: which is better overall and for which user type each phone suits best.",
+  "winner":"phone1 or phone2 or tie"
+}
+All score fields must be integers 0-100. Be factually accurate.`;
+
+    const res = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:1000,
+        messages:[{role:"user",content:prompt}]
+      })
+    });
+    const d = await res.json();
+    const raw = (d.content||[]).map(c=>c.text||'').join('');
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const result = JSON.parse(clean);
+
+    clearInterval(iv);
+    document.getElementById('aiLoading').classList.remove('show');
+    renderResults(result, p1, p2);
+
+  }catch(err){
+    clearInterval(iv);
+    document.getElementById('aiLoading').classList.remove('show');
+    document.getElementById('cmpTable').innerHTML =
+      `<div class="err-box">⚠️ Something went wrong. Please try again.<br><small style="opacity:.6">${err.message}</small></div>`;
+    document.getElementById('results').classList.add('show');
+  }
+}
+
+// ════════════════════════════════════════
+//  RENDER RESULTS
+// ════════════════════════════════════════
+function renderResults(data, p1label, p2label){
+  const d1 = data.phone1 || {};
+  const d2 = data.phone2 || {};
+  const n1 = d1.fullName || p1label;
+  const n2 = d2.fullName || p2label;
+  const winner = data.winner || 'tie';
+
+  document.getElementById('rTitle').textContent = n1 + '  VS  ' + n2;
+  document.getElementById('rDate').textContent = 'AI Analysis · ' + new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+
+  // Winner banner
+  const wb = document.getElementById('winnerBannerWrap');
+  if(winner==='tie'){
+    wb.innerHTML=`<div class="winner-banner wtie"><span class="winner-trophy">🤝</span>It's a TIE — Both phones are evenly matched!</div>`;
+  }else if(winner==='phone1'){
+    wb.innerHTML=`<div class="winner-banner w1"><span class="winner-trophy">🏆</span>${n1} WINS THIS COMPARISON</div>`;
+  }else{
+    wb.innerHTML=`<div class="winner-banner w2"><span class="winner-trophy">🏆</span>${n2} WINS THIS COMPARISON</div>`;
+  }
+
+  // Spec rows definition
+  const SPECS = [
+    {section:'📱 Display'},
+    {key:'display', label:'Screen'},
+    {section:'⚡ Performance'},
+    {key:'processor', label:'Processor'},
+    {key:'ram', label:'RAM'},
+    {key:'storage', label:'Storage'},
+    {section:'📸 Camera'},
+    {key:'mainCamera', label:'Main Camera'},
+    {key:'frontCamera', label:'Front Camera'},
+    {section:'🔋 Battery & Connectivity'},
+    {key:'battery', label:'Battery'},
+    {key:'connectivity', label:'Connectivity'},
+    {key:'nfc', label:'NFC'},
+    {key:'os', label:'OS'},
+    {section:'📐 Build'},
+    {key:'weight', label:'Weight'},
+    {key:'dimensions', label:'Dimensions'},
+    {key:'waterResist', label:'Water Resist'},
+    {key:'price', label:'Price'},
+    {section:'📊 Scores'},
+    {score:true, key:'scoreDisplay', label:'Display'},
+    {score:true, key:'scorePerformance', label:'Performance'},
+    {score:true, key:'scoreCamera', label:'Camera'},
+    {score:true, key:'scoreBattery', label:'Battery'},
+    {score:true, key:'scoreValue', label:'Value for Money'}
+  ];
+
+  let html = `<div class="cmp-head">
+    <div class="th">Spec</div>
+    <div class="th p1">📱 ${n1}</div>
+    <div class="th p2">📱 ${n2}</div>
+  </div>`;
+
+  const scoreIds = [];
+
+  SPECS.forEach((s,i)=>{
+    if(s.section){
+      html+=`<div class="cmp-row section-row"><div class="cmp-section">${s.section}<span class="sec-line"></span></div></div>`;
+      return;
+    }
+    if(s.score){
+      const sv1 = Math.min(100,Math.max(0,parseInt(d1[s.key])||70));
+      const sv2 = Math.min(100,Math.max(0,parseInt(d2[s.key])||70));
+      const id1=`sf1_${i}`, id2=`sf2_${i}`;
+      scoreIds.push({id1,id2,sv1,sv2});
+      const badge1 = sv1>sv2?'<span class="better-tag">BETTER</span>':'';
+      const badge2 = sv2>sv1?'<span class="better-tag">BETTER</span>':'';
+      html+=`<div class="cmp-row">
+        <div class="td-label">${s.label}</div>
+        <div class="td-val v1">
+          <div class="score-wrap">
+            <div class="score-track"><div class="score-fill1" id="${id1}" style="width:0%"></div></div>
+            <span class="score-num sn1">${sv1}</span>
+          </div>${badge1}
+        </div>
+        <div class="td-val v2">
+          <div class="score-wrap">
+            <div class="score-track"><div class="score-fill2" id="${id2}" style="width:0%"></div></div>
+            <span class="score-num sn2">${sv2}</span>
+          </div>${badge2}
+        </div>
+      </div>`;
+    }else{
+      const v1 = d1[s.key]||'—';
+      const v2 = d2[s.key]||'—';
+      html+=`<div class="cmp-row">
+        <div class="td-label">${s.label}</div>
+        <div class="td-val v1">${v1}</div>
+        <div class="td-val v2">${v2}</div>
+      </div>`;
+    }
+  });
+
+  document.getElementById('cmpTable').innerHTML = html;
+
+  // Animate score bars after paint
+  requestAnimationFrame(()=>{
+    scoreIds.forEach(({id1,id2,sv1,sv2},i)=>{
+      setTimeout(()=>{
+        const b1=document.getElementById(id1);
+        const b2=document.getElementById(id2);
+        if(b1) b1.style.width=sv1+'%';
+        if(b2) b2.style.width=sv2+'%';
+      }, 80 + i*80);
+    });
+  });
+
+  // Verdict
+  if(data.verdict){
+    const hl1=`<span class="hl1">${n1}</span>`;
+    const hl2=`<span class="hl2">${n2}</span>`;
+    const wLabel = winner==='phone1'?`<span class="hl-win">🏆 ${n1}</span>`:
+                   winner==='phone2'?`<span class="hl-win">🏆 ${n2}</span>`:
+                   `<span class="hl-win">🤝 Both phones</span>`;
+    document.getElementById('verdictBody').innerHTML =
+      `<strong>Overall Winner: ${wLabel}</strong><br><br>${data.verdict}`;
+    document.getElementById('verdictCard').style.display='block';
+  }
+
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+init();
+</script>
+</body>
+</html>
